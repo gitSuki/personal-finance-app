@@ -13,7 +13,7 @@ func main() {
 		log.Fatal("[fatal] cannot load config", err)
 	}
 
-	server, err := api.NewServer()
+	server, err := api.NewServer(config)
 	if err != nil {
 		log.Fatal("[fatal] cannot create server", err)
 	}

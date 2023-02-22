@@ -24,6 +24,7 @@ func main() {
 	startHTTPProxyServer(config)
 }
 
+// startgRPCServer starts the gRPC server responsible for handling protocol buffer format requests
 func startgRPCServer(config util.Config) {
 	brokerServer, err := api.NewServer(config)
 	if err != nil {
@@ -46,6 +47,7 @@ func startgRPCServer(config util.Config) {
 	}
 }
 
+// startHTTPProxyServer starts the HTTP proxy server responsible for handling HTTP format requests
 func startHTTPProxyServer(config util.Config) {
 	brokerServer, err := api.NewServer(config)
 	if err != nil {

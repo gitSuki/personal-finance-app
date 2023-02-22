@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "github.com/gitsuki/finance/broker/pb";
+
+message HelloWorldRequest {
+    string request = 1;
+} 
+
+message HelloWorldRespopnse {
+    string response = 1;
+}

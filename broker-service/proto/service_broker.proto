@@ -4,6 +4,7 @@ package pb;
 
 import "google/api/annotations.proto";
 import "rpc_login_user.proto";
+import "rpc_hello_world.proto";
 
 option go_package = "github.com/gitsuki/finance/broker/pb";
 
@@ -11,6 +12,12 @@ service Broker {
     rpc LoginUser (LoginUserRequest) returns (LoginUserResponse) {
         option (google.api.http) = {
             post: "/v1/login_user"
+            body: "*"
+        };
+    }
+    rpc HelloWorld (HelloWorldRequest) returns (HelloWorldResponse) {
+        option (google.api.http) = {
+            post: "/v1/hello_world"
             body: "*"
         };
     }

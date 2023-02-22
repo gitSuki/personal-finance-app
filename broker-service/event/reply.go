@@ -1,7 +1,10 @@
 package event
 
 import (
+	"context"
 	"log"
+	"strings"
+	"time"
 
 	"github.com/gitsuki/finance/broker/util"
 	amqp "github.com/rabbitmq/amqp091-go"
@@ -43,7 +46,7 @@ func RecieveRequest(config util.Config) {
 	consumerArgs := &consumeParams{
 		QueueName:     queue.Name,
 		Consumer:      "testing_consumer",
-		ShouldAutoAck: true,
+		ShouldAutoAck: false,
 		IsExclusive:   true,
 		ShouldNoLocal: false,
 		ShouldNotWait: false,
@@ -64,6 +67,44 @@ func RecieveRequest(config util.Config) {
 
 	var forever chan struct{}
 
-	log.Printf(" [*] Awaiting requests.")
+	go func() {
+		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		defer cancel()
+
+		for rsp := range consumer {
+			log.Printf("Received a message: %s", rsp.Body)
+			body := strings.ToUpper(string(rsp.Body))
+
+			msg := amqp.Publishing{
+				ContentType:   "text/plain",
+				CorrelationId: rsp.CorrelationId,
+				Body:          []byte(body),
+			}
+
+			publishArgs := &publishParams{
+				Context:      ctx,
+				ExchangeName: "",
+				RoutingKey:   queue.Name,
+				IsMandatory:  false,
+				IsImmediate:  false,
+				Message:      msg,
+			}
+			err = ch.PublishWithContext(
+				publishArgs.Context,
+				publishArgs.ExchangeName,
+				publishArgs.RoutingKey,
+				publishArgs.IsMandatory,
+				publishArgs.IsImmediate,
+				publishArgs.Message,
+			)
+			if err != nil {
+				log.Panic("[panic] unable to publish message", err)
+			}
+
+			rsp.Ack(false)
+		}
+	}()
+
+	log.Printf(" [*] Awaiting requests")
 	<-forever
 }

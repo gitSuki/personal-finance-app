@@ -125,11 +125,12 @@ func SendRequest(config util.Config, message string) {
 	if err != nil {
 		log.Panic("[panic] unable to publish message", err)
 	}
+	log.Printf(" [x] Sent %s\n", message)
 
 	for response := range consumer {
 		if corrId == response.CorrelationId {
 			body := string(response.Body)
-			log.Printf("[.] Got %s", body)
+			log.Printf("[.] Recieved response  %s", body)
 		}
 	}
 }

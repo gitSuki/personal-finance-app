@@ -23,6 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type BrokerClient interface {
 	LoginUser(ctx context.Context, in *LoginUserRequest, opts ...grpc.CallOption) (*LoginUserResponse, error)
+	HelloWorld(ctx context.Context, in *HelloWorldRequest, opts ...grpc.CallOption) (*HelloWorldResponse, error)
 }
 
 type brokerClient struct {
@@ -42,11 +43,21 @@ func (c *brokerClient) LoginUser(ctx context.Context, in *LoginUserRequest, opts
 	return out, nil
 }
 
+func (c *brokerClient) HelloWorld(ctx context.Context, in *HelloWorldRequest, opts ...grpc.CallOption) (*HelloWorldResponse, error) {
+	out := new(HelloWorldResponse)
+	err := c.cc.Invoke(ctx, "/pb.Broker/HelloWorld", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // BrokerServer is the server API for Broker service.
 // All implementations must embed UnimplementedBrokerServer
 // for forward compatibility
 type BrokerServer interface {
 	LoginUser(context.Context, *LoginUserRequest) (*LoginUserResponse, error)
+	HelloWorld(context.Context, *HelloWorldRequest) (*HelloWorldResponse, error)
 	mustEmbedUnimplementedBrokerServer()
 }
 
@@ -56,6 +67,9 @@ type UnimplementedBrokerServer struct {
 
 func (UnimplementedBrokerServer) LoginUser(context.Context, *LoginUserRequest) (*LoginUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LoginUser not implemented")
+}
+func (UnimplementedBrokerServer) HelloWorld(context.Context, *HelloWorldRequest) (*HelloWorldResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method HelloWorld not implemented")
 }
 func (UnimplementedBrokerServer) mustEmbedUnimplementedBrokerServer() {}
 
@@ -88,6 +102,24 @@ func _Broker_LoginUser_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Broker_HelloWorld_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(HelloWorldRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BrokerServer).HelloWorld(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.Broker/HelloWorld",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BrokerServer).HelloWorld(ctx, req.(*HelloWorldRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Broker_ServiceDesc is the grpc.ServiceDesc for Broker service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -98,6 +130,10 @@ var Broker_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "LoginUser",
 			Handler:    _Broker_LoginUser_Handler,
+		},
+		{
+			MethodName: "HelloWorld",
+			Handler:    _Broker_HelloWorld_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

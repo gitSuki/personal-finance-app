@@ -8,6 +8,6 @@ message HelloWorldRequest {
     string request = 1;
 } 
 
-message HelloWorldRespopnse {
+message HelloWorldResponse {
     string response = 1;
 }

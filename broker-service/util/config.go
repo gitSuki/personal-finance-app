@@ -4,6 +4,7 @@ import "github.com/spf13/viper"
 
 // Config stores all the configuration for the service's environmenment variables
 type Config struct {
+	RabbitMQ              string `mapstructure:"RABBITMQ_SOURCE"`
 	HTTPServerAddress     string `mapstructure:"HTTP_SERVER_ADDRESS"`
 	ProtobufServerAddress string `mapstructure:"PROTOBUF_SERVER_ADDRESS"`
 }

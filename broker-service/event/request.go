@@ -57,7 +57,7 @@ func SendRequest(config util.Config, message string) {
 		Name:             "testing_queue",
 		IsDurable:        false,
 		ShouldAutoDelete: false,
-		IsExclusive:      true,
+		IsExclusive:      false,
 		ShouldNotWait:    false,
 		Arguments:        nil,
 	}
@@ -77,7 +77,7 @@ func SendRequest(config util.Config, message string) {
 		QueueName:     queue.Name,
 		Consumer:      "testing_consumer",
 		ShouldAutoAck: true,
-		IsExclusive:   true,
+		IsExclusive:   false,
 		ShouldNoLocal: false,
 		ShouldNotWait: false,
 		Arguments:     nil,
@@ -125,12 +125,12 @@ func SendRequest(config util.Config, message string) {
 	if err != nil {
 		log.Panic("[panic] unable to publish message", err)
 	}
-	log.Printf(" [x] Sent %s\n", message)
+	log.Printf(" [REQUESTER] Sent %s\n", message)
 
 	for response := range consumer {
 		if corrId == response.CorrelationId {
 			body := string(response.Body)
-			log.Printf("[.] Recieved response  %s", body)
+			log.Printf(" [REQUESTER] Recieved response  %s", body)
 		}
 	}
 }

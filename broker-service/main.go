@@ -5,8 +5,10 @@ import (
 	"log"
 	"net"
 	"net/http"
+	"time"
 
 	"github.com/gitsuki/finance/broker/api"
+	"github.com/gitsuki/finance/broker/event"
 	"github.com/gitsuki/finance/broker/pb"
 	"github.com/gitsuki/finance/broker/util"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
@@ -20,8 +22,12 @@ func main() {
 		log.Fatal("[fatal] unable to load config", err)
 	}
 
-	go startgRPCServer(config) // runs on seperate goroutine to handle HTTP and gRPC requests concurrently
-	startHTTPProxyServer(config)
+	go event.RecieveRequest(config)
+	time.Sleep(1 * time.Second) // gives time for rabbitmq listener to start up
+	event.SendRequest(config, "Hello World")
+
+	// go startgRPCServer(config) // runs on seperate goroutine to handle HTTP and gRPC requests concurrently
+	// startHTTPProxyServer(config)
 }
 
 // startgRPCServer starts the gRPC server responsible for handling protocol buffer format requests

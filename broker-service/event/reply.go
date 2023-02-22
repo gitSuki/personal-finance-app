@@ -47,7 +47,7 @@ func RecieveRequest(config util.Config) {
 		QueueName:     queue.Name,
 		Consumer:      "testing_consumer",
 		ShouldAutoAck: false,
-		IsExclusive:   true,
+		IsExclusive:   false,
 		ShouldNoLocal: false,
 		ShouldNotWait: false,
 		Arguments:     nil,
@@ -72,7 +72,7 @@ func RecieveRequest(config util.Config) {
 		defer cancel()
 
 		for rsp := range consumer {
-			log.Printf("Received a message: %s", rsp.Body)
+			log.Printf(" [REPLIER] Received a message: %s", rsp.Body)
 			body := strings.ToUpper(string(rsp.Body))
 
 			msg := amqp.Publishing{
@@ -100,11 +100,12 @@ func RecieveRequest(config util.Config) {
 			if err != nil {
 				log.Panic("[panic] unable to publish message", err)
 			}
+			log.Printf(" [REPLIER] Sent response %s\n", body)
 
 			rsp.Ack(false)
 		}
 	}()
 
-	log.Printf(" [*] Awaiting requests")
+	log.Printf(" [REPLIER] Awaiting requests")
 	<-forever
 }

@@ -1,3 +1,7 @@
+# launches rabbitmq docker container
+rabbitmq:
+	docker run --hostname my-rabbit --name rabbitmq3 -p 5672:5672 -d rabbitmq:3.11-alpine
+
 # launches the server
 server:
 	go run main.go
@@ -14,4 +18,4 @@ proto:
 evans:
 	evans --host localhost --port 8000 -r repl
 
-.PHONY: proto evans
+.PHONY: robbitmiq server proto evans

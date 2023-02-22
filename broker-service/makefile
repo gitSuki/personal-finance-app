@@ -1,3 +1,7 @@
+# launches the server
+server:
+	go run main.go
+
 # generate golang code for gRPC services and methods defined in the proto file
 proto:
 	rm -f pb/*.go

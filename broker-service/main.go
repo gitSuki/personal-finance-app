@@ -17,21 +17,21 @@ func main() {
 		log.Fatal("[fatal] cannot load config", err)
 	}
 
-	server, err := api.NewServer(config)
+	brokerServer, err := api.NewServer(config)
 	if err != nil {
 		log.Fatal("[fatal] cannot create server", err)
 	}
 
-	grpcServer := grpc.NewServer()
-	pb.RegisterBrokerServer(grpcServer, server)
-	reflection.Register(grpcServer) // allows gRPC client to explore which RPCs are available on the server
+	gRPCServer := grpc.NewServer()
+	pb.RegisterBrokerServer(gRPCServer, brokerServer)
+	reflection.Register(gRPCServer) // allows gRPC client to explore which RPCs are available on the server
 
 	listener, err := net.Listen("tcp", config.ServerAddress)
 	if err != nil {
 		log.Fatal("[fatal] cannot create listener", err)
 	}
 
-	err = grpcServer.Serve(listener)
+	err = gRPCServer.Serve(listener)
 	if err != nil {
 		log.Fatal("[fatal] unable to launch gRPC server", err)
 	}

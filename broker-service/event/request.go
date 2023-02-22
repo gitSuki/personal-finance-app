@@ -130,7 +130,7 @@ func SendRequest(config util.Config, message string) {
 	for response := range consumer {
 		if corrId == response.CorrelationId {
 			body := string(response.Body)
-			log.Printf(" [REQUESTER] Recieved response  %s", body)
+			log.Printf(" [REQUESTER] Recieved response:  %s", body)
 		}
 	}
 }

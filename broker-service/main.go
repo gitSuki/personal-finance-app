@@ -22,12 +22,13 @@ func main() {
 		log.Fatal("[fatal] unable to load config", err)
 	}
 
-	go event.RecieveRequest(config)
-	time.Sleep(1 * time.Second) // gives time for rabbitmq listener to start up
-	event.SendRequest(config, "Hello World")
+	// run on seperate goroutines to handle HTTP and gRPC requests and listen to rabbitMQ responses concurrently
+	go event.RecieveRequests(config)
+	go startgRPCServer(config)
+	go startHTTPProxyServer(config)
 
-	// go startgRPCServer(config) // runs on seperate goroutine to handle HTTP and gRPC requests concurrently
-	// startHTTPProxyServer(config)
+	time.Sleep(1 * time.Second) // for debugging
+	event.SendRequest(config, "Hello World")
 }
 
 // startgRPCServer starts the gRPC server responsible for handling protocol buffer format requests

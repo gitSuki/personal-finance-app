@@ -10,7 +10,7 @@ import (
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
-func RecieveRequest(config util.Config) {
+func RecieveRequests(config util.Config) {
 	conn, err := amqp.Dial(config.RabbitMQ)
 	if err != nil {
 		log.Panic("[panic] unable to connect to rabbitmq", err)
@@ -100,7 +100,7 @@ func RecieveRequest(config util.Config) {
 			if err != nil {
 				log.Panic("[panic] unable to publish message", err)
 			}
-			log.Printf(" [REPLIER] Sent response %s\n", body)
+			log.Printf(" [REPLIER] Sent response: %s\n", body)
 
 			rsp.Ack(false)
 		}

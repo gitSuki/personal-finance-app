@@ -16,6 +16,6 @@ proto:
 
 # client for sending test requests to the gRPC server
 evans:
-	evans --host localhost --port 8000 -r repl
+	evans --host localhost --port 9000 -r repl
 
 .PHONY: robbitmiq server proto evans

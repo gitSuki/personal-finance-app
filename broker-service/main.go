@@ -5,7 +5,6 @@ import (
 	"log"
 	"net"
 	"net/http"
-	"time"
 
 	"github.com/gitsuki/finance/broker/api"
 	"github.com/gitsuki/finance/broker/event"
@@ -25,10 +24,7 @@ func main() {
 	// run on seperate goroutines to handle HTTP and gRPC requests and listen to rabbitMQ responses concurrently
 	go event.RecieveRequests(config)
 	go startgRPCServer(config)
-	go startHTTPProxyServer(config)
-
-	time.Sleep(1 * time.Second) // for debugging
-	event.SendRequest(config, "Hello World")
+	startHTTPProxyServer(config)
 }
 
 // startgRPCServer starts the gRPC server responsible for handling protocol buffer format requests

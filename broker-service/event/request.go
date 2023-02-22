@@ -38,7 +38,7 @@ type publishParams struct {
 	Message      amqp.Publishing
 }
 
-func SendRequest(config util.Config, message string) {
+func SendRequest(config util.Config, message string) string {
 	data := []byte(message)
 
 	conn, err := amqp.Dial(config.RabbitMQ)
@@ -127,10 +127,13 @@ func SendRequest(config util.Config, message string) {
 	}
 	log.Printf(" [REQUESTER] Sent %s\n", message)
 
+	var testRSP string
 	for response := range consumer {
 		if corrId == response.CorrelationId {
-			body := string(response.Body)
-			log.Printf(" [REQUESTER] Recieved response:  %s", body)
+			testRSP = string(response.Body)
+			log.Printf(" [REQUESTER] Recieved response:  %s", testRSP)
+			break
 		}
 	}
+	return testRSP
 }

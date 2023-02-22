@@ -3,6 +3,7 @@ module github.com/gitsuki/finance/broker
 go 1.18
 
 require (
+	github.com/google/uuid v1.3.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.15.0
 	github.com/rabbitmq/amqp091-go v1.7.0
 	github.com/spf13/viper v1.15.0

@@ -26,7 +26,7 @@ func main() {
 	pb.RegisterBrokerServer(gRPCServer, brokerServer)
 	reflection.Register(gRPCServer) // allows gRPC client to explore which RPCs are available on the server
 
-	listener, err := net.Listen("tcp", config.ServerAddress)
+	listener, err := net.Listen("tcp", config.GRPCServerAddress)
 	if err != nil {
 		log.Fatal("[fatal] cannot create listener", err)
 	}

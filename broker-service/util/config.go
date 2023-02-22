@@ -4,7 +4,8 @@ import "github.com/spf13/viper"
 
 // Config stores all the configuration for the service's environmenment variables
 type Config struct {
-	ServerAddress string `mapstructure:"HTTP_SERVER_ADDRESS"`
+	HTTPServerAddress string `mapstructure:"HTTP_SERVER_ADDRESS"`
+	GRPCServerAddress string `mapstructure:"GRPC_SERVER_ADDRESS"`
 }
 
 // LoadConfig uses viper to load the environment variables and returns a config struct

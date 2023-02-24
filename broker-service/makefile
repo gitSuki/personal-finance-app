@@ -1,3 +1,7 @@
+# builds docker image
+docker:
+	docker build -t broker-service:1.1 .
+
 # launches rabbitmq docker container
 rabbitmq:
 	docker run --hostname my-rabbit --name rabbitmq3 -p 5672:5672 -d rabbitmq:3.11-alpine
@@ -18,4 +22,4 @@ proto:
 evans:
 	evans --host localhost --port 9000 -r repl
 
-.PHONY: robbitmiq server proto evans
+.PHONY: rabbitmiq server proto evans

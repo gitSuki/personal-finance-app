@@ -5,9 +5,9 @@ import (
 	"github.com/gitsuki/finance/listener/util"
 )
 
-// Server serves gRPC requests for our broker service
+// Server serves gRPC requests for our listener service
 type Server struct {
-	pb.UnimplementedBrokerServer
+	pb.UnimplementedListenerServer
 	config util.Config
 }
 

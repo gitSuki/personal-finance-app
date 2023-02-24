@@ -2,6 +2,6 @@ syntax = "proto3";
 
 package pb;
 
-option go_package = "github.com/gitsuki/listener/broker/pb";
+option go_package = "github.com/gitsuki/finance/listener/pb";
 
-service Broker {}
+service Listener {}

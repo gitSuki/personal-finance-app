@@ -15,50 +15,50 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// BrokerClient is the client API for Broker service.
+// ListenerClient is the client API for Listener service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type BrokerClient interface {
+type ListenerClient interface {
 }
 
-type brokerClient struct {
+type listenerClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewBrokerClient(cc grpc.ClientConnInterface) BrokerClient {
-	return &brokerClient{cc}
+func NewListenerClient(cc grpc.ClientConnInterface) ListenerClient {
+	return &listenerClient{cc}
 }
 
-// BrokerServer is the server API for Broker service.
-// All implementations must embed UnimplementedBrokerServer
+// ListenerServer is the server API for Listener service.
+// All implementations must embed UnimplementedListenerServer
 // for forward compatibility
-type BrokerServer interface {
-	mustEmbedUnimplementedBrokerServer()
+type ListenerServer interface {
+	mustEmbedUnimplementedListenerServer()
 }
 
-// UnimplementedBrokerServer must be embedded to have forward compatible implementations.
-type UnimplementedBrokerServer struct {
+// UnimplementedListenerServer must be embedded to have forward compatible implementations.
+type UnimplementedListenerServer struct {
 }
 
-func (UnimplementedBrokerServer) mustEmbedUnimplementedBrokerServer() {}
+func (UnimplementedListenerServer) mustEmbedUnimplementedListenerServer() {}
 
-// UnsafeBrokerServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to BrokerServer will
+// UnsafeListenerServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to ListenerServer will
 // result in compilation errors.
-type UnsafeBrokerServer interface {
-	mustEmbedUnimplementedBrokerServer()
+type UnsafeListenerServer interface {
+	mustEmbedUnimplementedListenerServer()
 }
 
-func RegisterBrokerServer(s grpc.ServiceRegistrar, srv BrokerServer) {
-	s.RegisterService(&Broker_ServiceDesc, srv)
+func RegisterListenerServer(s grpc.ServiceRegistrar, srv ListenerServer) {
+	s.RegisterService(&Listener_ServiceDesc, srv)
 }
 
-// Broker_ServiceDesc is the grpc.ServiceDesc for Broker service.
+// Listener_ServiceDesc is the grpc.ServiceDesc for Listener service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var Broker_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "pb.Broker",
-	HandlerType: (*BrokerServer)(nil),
+var Listener_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "pb.Listener",
+	HandlerType: (*ListenerServer)(nil),
 	Methods:     []grpc.MethodDesc{},
 	Streams:     []grpc.StreamDesc{},
 	Metadata:    "service_listener.proto",

@@ -12,7 +12,7 @@ type Config struct {
 func LoadConfig(path string) (Config, error) {
 	config := Config{}
 	viper.AddConfigPath(path)
-	viper.SetConfigName("broker-service")
+	viper.SetConfigName("listener-service")
 	viper.SetConfigType("env")
 
 	viper.AutomaticEnv()

@@ -25,13 +25,13 @@ func main() {
 
 // startgRPCServer starts the gRPC server responsible for handling protocol buffer format requests
 func startgRPCServer(config util.Config) {
-	brokerServer, err := api.NewServer(config)
+	listenerServer, err := api.NewServer(config)
 	if err != nil {
-		log.Fatal("[fatal] unable to create broker server", err)
+		log.Fatal("[fatal] unable to create listener server", err)
 	}
 
 	gRPCServer := grpc.NewServer()
-	pb.RegisterBrokerServer(gRPCServer, brokerServer)
+	pb.RegisterListenerServer(gRPCServer, listenerServer)
 	reflection.Register(gRPCServer) // allows gRPC client to explore which RPCs are available on the server
 
 	listener, err := net.Listen("tcp", config.ProtobufServerAddress)

@@ -7,7 +7,6 @@ import (
 	"net/http"
 
 	"github.com/gitsuki/finance/broker/api"
-	"github.com/gitsuki/finance/broker/event"
 	"github.com/gitsuki/finance/broker/pb"
 	"github.com/gitsuki/finance/broker/util"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
@@ -21,8 +20,7 @@ func main() {
 		log.Fatal("[fatal] unable to load config", err)
 	}
 
-	// run on seperate goroutines to handle HTTP and gRPC requests and listen to rabbitMQ responses concurrently
-	go event.RecieveRequests(config)
+	// run on seperate goroutines to handle HTTP and gRPC requests concurrently
 	go startgRPCServer(config)
 	startHTTPProxyServer(config)
 }
